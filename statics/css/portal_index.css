@@ -1,0 +1,21 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    direction: rtl;
+}
+
+.space{
+    height: 30px;
+    width: 30px;
+}
+
+.ai_logo{
+    height: 200px;
+    width: 200px;
+}
+
+.iconic_part{
+    width: fit-content !important;
+    padding: 10px !important;
+}
