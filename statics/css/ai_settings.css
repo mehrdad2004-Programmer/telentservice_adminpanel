@@ -1,0 +1,17 @@
+*{
+    margin : 0;
+    padding : 0;
+    box-sizing: border-box;
+    direction: rtl !important;
+}
+
+option{
+    width: 100% !important;
+    min-width: 1000px !important;
+    direction: ltr !important;
+}
+
+.title-bar{
+    background-color: #6f49f8;
+    color: White;
+}
