@@ -1,35 +1,68 @@
-
-//hidden parts
 document.addEventListener("DOMContentLoaded", function () {
+    const card = document.querySelector("#card");
 
-    const form1 = document.querySelector("#form1");
-    const form2 = document.querySelector("#form2");
+    // Function to handle dynamic form and request
+    function handleFormRequest(url, method, formContent, callback, extra = {}) {
+        // Inject form content into the card
+        card.innerHTML = formContent;
 
-    const div_form1 = document.querySelector("#div_form1")
-    const div_form2 = document.querySelector("#div_form2")
+        const form = document.querySelector("form");
 
-    const forgetPassLink = document.querySelector("#forgetPassLib")
+        // Add event listener to the form for handling the submit event
+        form.addEventListener("submit", function (e) {
+            e.preventDefault(); // Prevent default form submission
 
-    const card = document.querySelector("#card")
+            const formData = new FormData(form);
+            const formValues = Object.fromEntries(formData);
 
+            if (formValues.username) {
+                localStorage.setItem("username", formValues.username); // Save the username
+            }
+
+            // Merge form values with the extra JSON data
+            const dataToSend = { ...formValues, ...extra };
+
+            // Make the fetch request with the provided URL and method
+            fetch(url, {
+                method: method,  // Use the method specified (POST, PATCH, PUT, etc.)
+                headers: {
+                    "Content-Type": "application/json",  // Set the content type as JSON
+                    "Accept": "application/json"
+                },
+                // Only include the body if the method is POST, PATCH, PUT, or other body-accepting methods
+                body: (method === "POST" || method === "PATCH" || method === "PUT") ? JSON.stringify(dataToSend) : null
+            })
+                .then(response => response.json())
+                .then(data => {
+                    callback(data); // Execute the callback function on successful response
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+        });
+    }
+
+
+
+    // Function to update content based on the current hash or URL
     function updateContent() {
         const hash = window.location.hash;
 
         switch (hash) {
             case "#forgetPassword":
-                card.innerHTML = `
-                    <div class="container mt-4" id="div_form2">
+                const forgetPasswordContent = `
+                    <div class="container mt-4">
                         <div class="container text-center">
                             <span>فراموشی رمز عبور</span>
                         </div>
                         <div class="container mt-3">
                             جهت فراموشی رمزعبور، لطفا نام کاربری خود را وارد نمایید
                         </div>
-                        <form method="post" id="form2" class="mt-3">
+                        <form method="get" id="form2" class="mt-3">
                             <div>
                                 <label>نام کاربری</label>
                                 <div class="mt-2">
-                                    <input type="text" name="username" id="username" class="form-control container">
+                                    <input type="text" name="username" id="username" class="form-control container" required>
                                 </div>
                             </div>
                             <div class="mt-2">
@@ -39,11 +72,19 @@ document.addEventListener("DOMContentLoaded", function () {
                         </form>
                     </div>
                 `;
+                // Use the dynamic handler for the forgetPassword case
+                handleFormRequest("http://localhost:8000/api/v1/OTP/getCode?username=" + localStorage.getItem("username"), "GET", forgetPasswordContent, function (data) {
+                    if (data.statuscode == 200) {
+                        window.location.href = "#OTP";  // Go to OTP page
+                    } else {
+                        alert("مشکلی در ارتباط با سرور ایجاد شد");
+                    }
+                });
                 break;
 
             case "#newPassword":
-                card.innerHTML = `
-                    <div class="container mt-4" id="div_form2">
+                const newPasswordContent = `
+                    <div class="container mt-4">
                         <div class="container text-center">
                             <span> تنظیم مجدد رمز عبور</span>
                         </div>
@@ -54,13 +95,13 @@ document.addEventListener("DOMContentLoaded", function () {
                             <div>
                                 <label>رمزعبور</label>
                                 <div class="mt-2">
-                                    <input type="text" name="password" id="password" class="form-control container">
+                                    <input type="password" name="password" id="password" class="form-control container">
                                 </div>
                             </div>
                             <div class="mt-3">
                                 <label>تکرار رمز</label>
                                 <div class="mt-2">
-                                    <input type="text" name="repass" id="repass" class="form-control container">
+                                    <input type="password" name="repass" id="repass" class="form-control container">
                                 </div>
                             </div>
                             <div class="mt-2">
@@ -70,18 +111,29 @@ document.addEventListener("DOMContentLoaded", function () {
                         </form>
                     </div>
                 `;
+                // Use the dynamic handler for the newPassword case
+                handleFormRequest("http://localhost:8000/api/v1/AuthSystem/changePassword", "PATCH", newPasswordContent, function (data) {
+                    if (data.statuscode == 200) {
+                        window.location.href = "#successPage"; // Redirect to success page
+                    } else {
+                        alert("مشکلی در تنظیم رمز عبور پیش آمد");
+                    }
+                }, {
+                    "username" : localStorage.getItem("username")
+                });
                 break;
+
             case "#OTP":
-                card.innerHTML = `
-                    <div class="container mt-4" id="div_form2">
+                const otpContent = `
+                    <div class="container mt-4">
                         <div class="container text-center">
                             <span>رمز یکبار مصرف</span>
                         </div>
-                        <form method="post" id="form2" class="mt-3">
+                        <form method="get" id="form2" class="mt-3">
                             <div>
                                 <label>رمز یکبار مصرف را وارد کنید</label>
                                 <div class="mt-2">
-                                    <input type="text" name="password" id="password" class="form-control container">
+                                    <input type="text" name="code" id="code" class="form-control container" required>
                                 </div>
                             </div>
                             <div class="mt-2">
@@ -91,24 +143,30 @@ document.addEventListener("DOMContentLoaded", function () {
                         </form>
                     </div>
                 `;
+                // Use the dynamic handler for the OTP case
+                handleFormRequest("http://localhost:8000/api/v1/OTP/checkCode", "POST", otpContent, function (data) {
+                    if (data.statuscode == 200) {
+                        window.location.href = "#newPassword";
+                    } else {
+                        alert("کد یکبار مصرف نامعتبر است");
+                    }
+                }, {
+                    "username": localStorage.getItem("username")
+                });
                 break;
 
             default:
-                card.innerHTML = `
-                    <div class="container mt-4" id="div_form1">
+                const defaultContent = `
+                    <div class="container mt-4">
                         <div class="container text-center">
                             <div>
                                 <img src="statics/images/logo/startabad.jpg" class="logo">
                             </div>
                             <div class="mt-4">
-                                <span>
-                                    موسسه آموزشی استارت آباد
-                                </span>
+                                <span> موسسه آموزشی استارت آباد </span>
                             </div>
                             <div class="mt-2">
-                                <span>
-                                    پورتال مدیریت آزمون های استعداد سنجی
-                                </span>
+                                <span>پورتال مدیریت آزمون های استعداد سنجی</span>
                             </div>
                         </div>
                         <form method="post" id="form1" class="mt-3">
@@ -135,47 +193,22 @@ document.addEventListener("DOMContentLoaded", function () {
                         </form>
                     </div>
                 `;
+                // Use the dynamic handler for the default case (login form)
+                handleFormRequest("http://localhost:8000/api/v1/AuthSystem/login", "POST", defaultContent, function (data) {
+                    if (data.statuscode == 200) {
+                        alert("Login successful");
+                        window.location.href = "/portal/index.html";
+                    } else {
+                        alert("Incorrect username or password.");
+                    }
+                });
                 break;
         }
     }
 
+    // Initial content update when the page loads
     updateContent();
+
+    // Event listener for hashchange to update content dynamically
     window.addEventListener('hashchange', updateContent);
-
-
-
-
-
-    form1.addEventListener('submit', function (e) {
-        e.preventDefault();
-
-        const username = document.querySelector("#username");
-        const password = document.querySelector("#password");
-
-        fetch("http://localhost:8000/api/v1/AuthSystem/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "Application/json",
-                "Credentials": "include"
-            },
-            body: JSON.stringify({
-                "username": username.value,
-                "password": password.value
-            })
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data)
-                if (data.statuscode == 200) {
-                    alert("خوش آمدید");
-                    window.location.href = "/portal/index.html";
-                    return;
-                }
-
-                alert("نام کاربری یا رمز عبور اشتباه است")
-            })
-    })
 });
-
-
