@@ -2,12 +2,30 @@ const provider = document.querySelector("#provider");
 const model = document.querySelector("#model");
 const parentProvider = document.querySelector("#provider-parent");
 const prompt = document.querySelector("#prompt");
+const p_box = document.querySelector("#p-box")
 
 const form = document.querySelector("form");
 const submit = document.querySelector("#submit");
 
+// کنترل نمایش و عدم نمایش prompt
+function handlePromptVisibility() {
+    if (provider.value === "SmartSupport") {
+        prompt.style.display = "none";
+        p_box.style.display = 'none';
+    } else {
+        p_box.style.display = 'block';
+        prompt.style.display = "block";
+    }
+}
+
 provider.addEventListener('change', function (e) {
-    if (provider.value != "SmartSupport" && provider.value != "AIQ" && provider.value != "none") {
+
+    // همیشه وضعیت prompt را کنترل کن
+    handlePromptVisibility();
+
+    // اگر provider فقط AvalAI باشد مدل‌ها را لود کن
+    if (provider.value !== "SmartSupport" && provider.value !== "AIQ" && provider.value !== "none") {
+
         // Clear existing options first
         model.innerHTML = "";
 
@@ -30,7 +48,6 @@ provider.addEventListener('change', function (e) {
                 if (data.msg && data.msg.data && Array.isArray(data.msg.data)) {
                     data.msg.data.forEach(item => {
                         const option = document.createElement("option");
-                        // Use actual properties from your API
                         option.textContent = item.id || item.model || item.title || "Unknown";
                         option.value = item.id || item.value || item.model || "";
                         model.appendChild(option);
@@ -48,8 +65,10 @@ provider.addEventListener('change', function (e) {
             });
         
         parentProvider.style.display = "block";
-    } else {
+    } 
+    else {
         parentProvider.style.display = "none";
+
         // Clear and add GPT option
         model.innerHTML = "";
         const gptOption = document.createElement("option");
@@ -59,6 +78,7 @@ provider.addEventListener('change', function (e) {
         model.value = "GPT";
     }
 });
+
 
 form.addEventListener('submit', function(e){
     e.preventDefault();
@@ -84,6 +104,4 @@ form.addEventListener('submit', function(e){
                 alert("خطا در بروزرسانی ، لطفا مجدد تلاش کنید")
             })
     }
-
-
-})
+});
