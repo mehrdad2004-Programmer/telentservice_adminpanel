@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     </div>
                 `;
                 // Use the dynamic handler for the forgetPassword case
-                handleFormRequest("http://localhost:8000/api/v1/OTP/getCode?username=" + localStorage.getItem("username"), "GET", forgetPasswordContent, function (data) {
+                handleFormRequest(BASEURL + "/api/v1/OTP/getCode?username=" + localStorage.getItem("username"), "GET", forgetPasswordContent, function (data) {
                     if (data.statuscode == 200) {
                         window.location.href = "#OTP";  // Go to OTP page
                     } else {
@@ -112,7 +112,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     </div>
                 `;
                 // Use the dynamic handler for the newPassword case
-                handleFormRequest("http://localhost:8000/api/v1/AuthSystem/changePassword", "PATCH", newPasswordContent, function (data) {
+                handleFormRequest(BASEURL + "/api/v1/AuthSystem/changePassword", "PATCH", newPasswordContent, function (data) {
                     if (data.statuscode == 200) {
                         window.location.href = "#successPage"; // Redirect to success page
                     } else {
@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     </div>
                 `;
                 // Use the dynamic handler for the OTP case
-                handleFormRequest("http://localhost:8000/api/v1/OTP/checkCode", "POST", otpContent, function (data) {
+                handleFormRequest(BASEURL + "/api/v1/OTP/checkCode", "POST", otpContent, function (data) {
                     if (data.statuscode == 200) {
                         window.location.href = "#newPassword";
                     } else {
@@ -194,7 +194,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     </div>
                 `;
                 // Use the dynamic handler for the default case (login form)
-                handleFormRequest("http://localhost:8000/api/v1/AuthSystem/login", "POST", defaultContent, function (data) {
+                handleFormRequest(BASEURL + "/api/v1/AuthSystem/login", "POST", defaultContent, function (data) {
                     if (data.statuscode == 200) {
                         alert("Login successful");
                         window.location.href = "/portal/index.html";

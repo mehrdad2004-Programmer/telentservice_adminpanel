@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const content = document.querySelector("#content");
     const hash = window.location.hash.split("#")[1];
 
-    fetch("http://localhost:8000/api/v1/" + hash + "/questions/get", {
+    fetch(BASEURL + "/api/v1/" + hash + "/questions/get", {
         method: "GET"
     })
         .then(response => response.json())
@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     console.log("ID:", questionId, "New Question:", newQuestion);
 
                     if (confirm("آیا اطمینان دارید؟")) {
-                        fetch("http://localhost:8000/api/v1/" + hash + "/questions/update", {
+                        fetch(BASEURL + "/api/v1/" + hash + "/questions/update", {
                             method: "PATCH",
                             headers: {
                                 "Content-Type": "application/json",
@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         // Correct selector here: Use '#' to select the correct button
                         const questionId = this.getAttribute("data-id");
 
-                        fetch("http://localhost:8000/api/v1/" + hash + "/questions/delete", {
+                        fetch(BASEURL + "/api/v1/" + hash + "/questions/delete", {
                             method: "DELETE",
                             headers: {
                                 "Content-Type": "application/json",

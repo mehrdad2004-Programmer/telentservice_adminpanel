@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // GETTING ALL TYPE QUESTIONS
     questionTypes.forEach(item => {
         currentFetch = currentFetch.then(() => {
-            return fetchData("http://localhost:8000/api/v1/" + item + "/questions/get")
+            return fetchData(BASEURL + "/api/v1/" + item + "/questions/get")
                 .then(response => response.json())
                 .then(data => {
                     data.msg.forEach(item2 => {
@@ -156,7 +156,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // 3) Send request
         // -------------------------------
 
-        fetchData("http://localhost:8000/api/v1/systematic/recommendation", "POST", JSON.stringify(sampleJson))
+        fetchData(BASEURL + "/api/v1/systematic/recommendation", "POST", JSON.stringify(sampleJson))
             .then(response => response.json())
             .then(data => {
                 console.log(data)

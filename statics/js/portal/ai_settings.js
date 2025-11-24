@@ -30,7 +30,7 @@ provider.addEventListener('change', function (e) {
         model.innerHTML = "";
 
         // Fetch fresh data each time
-        fetch("http://localhost:8000/api/v1/AIService/AvalAi/getModels", {
+        fetch(BASEURL + "/api/v1/AIService/AvalAi/getModels", {
             headers : {
                 "Content-Type" : "application/json",
                 "Accept" : "application/json"
@@ -88,7 +88,7 @@ form.addEventListener('submit', function(e){
     }
 
     if(confirm("آیا اطمینان دارید؟")){
-        fetch("http://localhost:8000/api/v1/AdminPanel/updateAiSettings?id=1&provider=" + provider.value + "&model=" + model.value + "&prompt=" + prompt.value, {
+        fetch(BASEURL + "/api/v1/AdminPanel/updateAiSettings?id=1&provider=" + provider.value + "&model=" + model.value + "&prompt=" + prompt.value, {
             method : "PATCH",
             headers : {
                 "Content-Type" : "application/json",

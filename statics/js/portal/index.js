@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function(e){
     const prompt = document.querySelector("#prompt");
 
 
-    const data = fetch("http://localhost:8000/api/v1/AdminPanel/getAiSettings")
+    const data = fetch(BASEURL + "/api/v1/AdminPanel/getAiSettings")
         .then(response => response.json())
         .then(data => {
             provider.textContent = data.msg[0].provider;
