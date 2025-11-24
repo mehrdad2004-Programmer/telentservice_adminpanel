@@ -85,6 +85,33 @@ document.addEventListener("DOMContentLoaded", function () {
     submit.addEventListener('click', function (e) {
         e.preventDefault();
 
+        // -------------------------------
+        // 1) Validate that each question has an answer
+        // -------------------------------
+
+        // گروه‌بندی رادیوها بر اساس name
+        let grouped = {};
+
+        document.querySelectorAll(".ans").forEach(radio => {
+            let name = radio.getAttribute("name");
+            if (!grouped[name]) grouped[name] = [];
+            grouped[name].push(radio);
+        });
+
+        // بررسی اینکه برای هر سوال حداقل یک گزینه انتخاب شده باشد
+        for (let key in grouped) {
+            let hasChecked = grouped[key].some(r => r.checked);
+
+            if (!hasChecked) {
+                alert(`لطفاً به سؤال شماره ${key} پاسخ دهید`);
+                return; // جلوگیری از ادامه ارسال
+            }
+        }
+
+        // -------------------------------
+        // 2) Build JSON after validation
+        // -------------------------------
+
         let sampleJson = {
             "MBTI": {
                 "EI": [],
@@ -125,11 +152,52 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
+        // -------------------------------
+        // 3) Send request
+        // -------------------------------
+
         fetchData("http://localhost:8000/api/v1/systematic/recommendation", "POST", JSON.stringify(sampleJson))
             .then(response => response.json())
             .then(data => {
                 console.log(data)
-            })
+                showModal(data)
+            });
     });
+
+
+
+
+    function showModal(resultData) {
+        // fill modal fields
+        document.getElementById("res_mbti").textContent = resultData.test_analysis.MBTI;
+        document.getElementById("res_holland").textContent = resultData.test_analysis.Holland;
+        document.getElementById("res_gardner").textContent = resultData.test_analysis.Gardner;
+
+        // ⭐ اضافه شدن بخش توضیحات
+        document.querySelector("#result_description").textContent = resultData.description;
+
+        // add course list
+        let ul = document.getElementById("res_courses");
+        ul.innerHTML = ""; // clear old
+
+        resultData.recommendation.forEach(c => {
+            let li = document.createElement("li");
+            li.textContent = c.course + " (امتیاز: " + c.score + ")";
+            ul.appendChild(li);
+        });
+
+        // show modal
+        document.getElementById("resultModal").style.display = "flex";
+    }
+
+
+    document.querySelector("#closemodal").addEventListener('click', function(){
+        closeModal();
+    })
+
+    function closeModal() {
+        document.getElementById("resultModal").style.display = "none";
+    }
+
 
 });

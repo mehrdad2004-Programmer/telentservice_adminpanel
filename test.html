@@ -11,6 +11,31 @@
 </head>
 
 <body>
+    <div id="resultModal" class="modal-overlay">
+        <div class="modal-box">
+            <h3 class="modal-title">نتیجه آزمون شما</h3>
+
+            <div class="modal-content">
+                <p class="p-1"><strong>MBTI:</strong> <span id="res_mbti"></span></p>
+                <p class="p-1"><strong>Holland:</strong> <span id="res_holland"></span></p>
+                <p class="p-1"><strong>Gardner:</strong> <span id="res_gardner"></span></p>
+
+                <hr>
+
+                <div class="modal-section">
+                    <h5>تحلیل کوتاه</h5>
+                    <p id="result_description" class="p-1"></p>
+                </div>
+
+                <hr>
+
+                <h4 class="p-1"> دوره‌های پیشنهادی:</h4>
+                <ul class="p-1" id="res_courses"></ul>
+            </div>
+
+            <button class="modal-close-btn" id="closemodal">بستن</button>
+        </div>
+    </div>
 
     <div class="container mt-3">
         <p>
@@ -19,6 +44,11 @@
         <p>
             آکادمی استارت آباد به منظور راهنمایی و هدایت هرچه بهتر کاربران خود در زمینه ها محتلف مهارت آموزی و هدایت شغلی، تصمیم به ارائه یک سرویس مبتنی بر هوش مصنوعی بر اساس شخصیت کاربران گرفته است. لذا خواهشمند است به منظور انجام هرچه بهتر این مهم، با دقت کافی به سوالات ذیل پاسح دهید. از همراهی و همکاری شما سپاسگزاریم
         </p>
+    </div>
+
+
+    <div class="contianer text-center">
+        <button id="shuffle" class="btn btn-primary">تصادفی</button>
     </div>
 
     <form method="POST">
@@ -40,6 +70,38 @@
         integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 
     <script src="statics/js/test.js"></script>
+
+
+    <script>
+        document.querySelector("#shuffle").addEventListener("click", function () {
+
+    // تمام رادیوباتن‌ها را بگیر
+    const radios = document.querySelectorAll("input[type='radio']");
+
+    // استخراج nameهای یونیک (هر سوال یک name دارد)
+    const groups = {};
+
+    radios.forEach(radio => {
+        const name = radio.name;
+        if (!groups[name]) {
+            groups[name] = [];
+        }
+        groups[name].push(radio);
+    });
+
+    // برای هر گروه، یک گزینه تصادفی انتخاب کن
+    Object.values(groups).forEach(group => {
+        // اول همه را از حالت checked خارج کن
+        group.forEach(r => r.checked = false);
+
+        // انتخاب تصادفی
+        const randomIndex = Math.floor(Math.random() * group.length);
+        group[randomIndex].checked = true;
+    });
+
+});
+
+    </script>
 </body>
 
 </html>
