@@ -120,7 +120,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 "JP": []
             },
             "Holland": [],
-            "Gardner": []
+            "Gardner": [],
+            "fname" : localStorage.getItem("fname"),
+            "lname" : localStorage.getItem("lname"),
+            "username" : localStorage.getItem("username")
         };
 
         let ans = document.querySelectorAll(".ans");
@@ -201,3 +204,35 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 });
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const saveBtn = document.querySelector("#saveBtn");
+    const modal = document.querySelector("#userModal");
+
+    modal.style.display = "flex";
+
+    // Save user data to localStorage when 'ثبت' button is clicked
+    saveBtn.addEventListener("click", function () {
+        const fname = document.querySelector("#fname").value;
+        const lname = document.querySelector("#lname").value;
+        const username = document.querySelector("#username").value;
+
+        // Check if all fields are filled
+        if (fname && lname && username) {
+            // Save to localStorage
+            localStorage.setItem("fname", fname);
+            localStorage.setItem("lname", lname);
+            localStorage.setItem("username", username);
+
+            alert("اطلاعات شما ذخیره شد");
+
+            // Close modal after saving
+            modal.style.display = "none";
+        } else {
+            alert("لطفاً همه اطلاعات را وارد کنید.");
+        }
+    });
+});
+
