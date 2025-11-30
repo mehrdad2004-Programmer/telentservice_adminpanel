@@ -1,9 +1,30 @@
 document.addEventListener("DOMContentLoaded", function () {
+
+
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const inputs = {
+        "course_name" : document.querySelector("#course_name"),
+        "mbti_tags" : document.querySelector("#mbti_tags"),
+        "holland_tags" : document.querySelector("#holland_tags"),
+        "gardner_tags" : document.querySelector("#gardner_tags"),
+        "description" : document.querySelector("#description")        
+    }
+
+    //getting specific course data by its id
+    fetch("http://localhost:8000/api/v1/Courses/getCourses?id=" + urlParams.get("id"))
+        .then(response => response.json())
+        .then(data => {
+            inputs.course_name.value = data.msg.course_name,
+            inputs.mbti_tags.value = data.msg.mbti_tags,
+            inputs.holland_tags.value = data.msg.holland_tags,
+            inputs.gardner_tags.value = data.msg.gardner_tags,
+            inputs.description.value = data.msg.description
+        })
     //inserting courses
     submit.addEventListener("click", function (e) {
         e.preventDefault();
 
-        const urlParams = new URLSearchParams(window.location.search);
 
         const formdata = new FormData(document.querySelector("form"))
         let jsonData = {};
