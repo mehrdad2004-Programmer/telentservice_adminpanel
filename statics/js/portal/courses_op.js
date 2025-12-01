@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     //getting specific course data by its id
-    fetch("http://localhost:8000/api/v1/Courses/getCourses?id=" + urlParams.get("id"))
+    fetch(BASEURL + "/api/v1/Courses/getCourses?id=" + urlParams.get("id"))
         .then(response => response.json())
         .then(data => {
             inputs.course_name.value = data.msg.course_name,
@@ -36,11 +36,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         switch(urlParams.get("op")){
             case "add":
-                url = "http://localhost:8000/api/v1/Courses/insertCourses";
+                url = BASEURL + "/api/v1/Courses/insertCourses";
                 method = "POST";
                 break;
             case "update":
-                url = "http://localhost:8000/api/v1/Courses/updateCourses";
+                url = BASEURL + "/api/v1/Courses/updateCourses";
                 method = "PATCH";
                 break;
         }
@@ -60,6 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 headers: {
                     "Content-Type": "application/json",
                     "Accept": "application/json",
+                    "Authorization" : "Bearer " + sessionStorage.getItem("auth-token")
                 }
             }
         )

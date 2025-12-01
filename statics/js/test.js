@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
             method: requestMethod,
             headers: {
                 "Content-Type": "application/json",
-                "Accept": "application/json"
+                "Accept": "application/json",
             },
             body: requestBody
         });

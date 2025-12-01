@@ -4,7 +4,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const courses_box = document.querySelector("#courses");
     const count = document.querySelector("#count");
     
-    fetch("http://localhost:8000/api/v1/Courses/getCourses")
+    fetch(BASEURL + "/api/v1/Courses/getCourses",{
+        headers : {
+            "Content-Type" : "application/json",
+            "Accept" : "application/json",
+            "Authorization" : "Bearer " + sessionStorage.getItem("auth-token")
+        }
+    })
         .then(response => response.json())
         .then(data => {
             data.msg.forEach(item => {
@@ -29,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         console.log(inputs)
 
-        let url = "http://localhost:8000/api/v1/Report/getReport?"
+        let url = BASEURL + "/api/v1/Report/getReport?"
 
         Object.entries(inputs).forEach(([key, val]) => {
             if (key === 'courses' && (!val.value || val.value === "none")) {

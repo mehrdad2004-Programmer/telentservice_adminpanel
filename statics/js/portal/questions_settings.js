@@ -3,7 +3,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const hash = window.location.hash.split("#")[1];
 
     fetch(BASEURL + "/api/v1/" + hash + "/questions/get", {
-        method: "GET"
+        method: "GET",
+        headers : {
+            "Content-Type" : "application/json",
+            "Accept" : "application/json",
+            "Authorization" : "Bearer " + sessionStorage.getItem("auth-token")
+        }
     })
         .then(response => response.json())
         .then(data => {
@@ -69,7 +74,8 @@ document.addEventListener('DOMContentLoaded', function () {
                             method: "PATCH",
                             headers: {
                                 "Content-Type": "application/json",
-                                "Accept": "application/json"
+                                "Accept": "application/json",
+                                "Authorization" : "Bearer " + sessionStorage.getItem("auth-token")
                             },
                             body: JSON.stringify({
                                 "questions": [
@@ -107,7 +113,8 @@ document.addEventListener('DOMContentLoaded', function () {
                             method: "DELETE",
                             headers: {
                                 "Content-Type": "application/json",
-                                "Accept": "application/json"
+                                "Accept": "application/json",
+                                "Authorization" : "Bearer " + sessionStorage.getItem("auth-token")
                             },
                             body: JSON.stringify({
                                 "questions": [

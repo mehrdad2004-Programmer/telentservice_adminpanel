@@ -33,7 +33,8 @@ provider.addEventListener('change', function (e) {
         fetch(BASEURL + "/api/v1/AIService/AvalAi/getModels", {
             headers : {
                 "Content-Type" : "application/json",
-                "Accept" : "application/json"
+                "Accept" : "application/json",
+                "Authorization" : "Bearer " + sessionStorage.getItem("auth-token")
             }
         })
             .then(response => {
@@ -92,7 +93,8 @@ form.addEventListener('submit', function(e){
             method : "PATCH",
             headers : {
                 "Content-Type" : "application/json",
-                "Accept" : "application/json"
+                "Accept" : "application/json",
+                "Authorization" : "Bearer " + sessionStorage.getItem("auth-token")
             }
         }).then(response => response.json())
             .then(data => {

@@ -27,7 +27,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 method: method,  // Use the method specified (POST, PATCH, PUT, etc.)
                 headers: {
                     "Content-Type": "application/json",  // Set the content type as JSON
-                    "Accept": "application/json"
+                    "Accept": "application/json",
+                    "Authorization" : "Bearer " + sessionStorage.getItem("auth-token")
                 },
                 // Only include the body if the method is POST, PATCH, PUT, or other body-accepting methods
                 body: (method === "POST" || method === "PATCH" || method === "PUT") ? JSON.stringify(dataToSend) : null
@@ -196,6 +197,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Use the dynamic handler for the default case (login form)
                 handleFormRequest(BASEURL + "/api/v1/AuthSystem/login", "POST", defaultContent, function (data) {
                     if (data.statuscode == 200) {
+                        sessionStorage.setItem("auth-token", data.token)
                         alert("Login successful");
                         window.location.href = "/portal/index.html";
                     } else {

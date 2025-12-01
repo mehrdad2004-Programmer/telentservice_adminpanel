@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function(){
                 const rowId = this.getAttribute("row-id");
                 
                 if(confirm("آیا اطمینان دارید؟")){
-                    fetch("http://localhost:8000/api/v1/Courses/deleteCourses?id=" + rowId, {
+                    fetch(BASEURL + "/api/v1/Courses/deleteCourses?id=" + rowId, {
                         method: "DELETE"
                     })
                     .then(response => response.json())
@@ -36,7 +36,13 @@ document.addEventListener("DOMContentLoaded", function(){
     }
 
     // Getting courses
-    fetch("http://localhost:8000/api/v1/Courses/getCourses")
+    fetch(BASEURL + "/api/v1/Courses/getCourses", {
+        headers : {
+            "Content-Type" : "application/json",
+            "Accept" : "application/json",
+            "Authorization" : "Bearer " + sessionStorage.getItem("auth-token")
+        }
+    })
     .then(response => response.json())
     .then(data => {
         console.log(data);

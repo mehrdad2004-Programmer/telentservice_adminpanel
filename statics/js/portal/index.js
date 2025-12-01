@@ -4,7 +4,13 @@ document.addEventListener("DOMContentLoaded", function(e){
     const prompt = document.querySelector("#prompt");
 
 
-    const data = fetch(BASEURL + "/api/v1/AdminPanel/getAiSettings")
+    const data = fetch(BASEURL + "/api/v1/AdminPanel/getAiSettings",{
+        headers : {
+            "Content-Type" : "application/json",
+            "Accept" : "application/json",
+            "Authorization" : "Bearer " + sessionStorage.getItem("auth-token")
+        }
+    })
         .then(response => response.json())
         .then(data => {
             provider.textContent = data.msg[0].provider;
