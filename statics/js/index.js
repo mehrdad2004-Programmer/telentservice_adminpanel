@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
+    sessionStorage.clear();
     const card = document.querySelector("#card");
 
     // Function to handle dynamic form and request

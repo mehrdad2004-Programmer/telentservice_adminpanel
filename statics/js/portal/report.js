@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             `
                         }
                         content.innerHTML += `
-                            <details class="p-1 rounded-3 border border-2">
+                            <details class="p-1 rounded-3 border border-2 mt-3">
                                 <summary>
                                     <span>${item.mbti.fname} ${item.mbti.lname}</span>
                                 </summary>
