@@ -22,6 +22,9 @@ document.addEventListener('DOMContentLoaded', function(){
                         <li class="nav-item">
                             <a class="nav-link" href="ai_settings.html">تنظیمات AI</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">خروج از حساب کاربری</a>
+                        </li>
                     </ul>
                 </div>
             </div>

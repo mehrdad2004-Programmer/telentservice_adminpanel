@@ -53,7 +53,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
         url.trim("&")
 
-        fetch(url)
+        fetch(url, {
+            headers : {
+                "Content-Type" : "application/json",
+                "Accept" : "application/json",
+                "Authorization" : "Bearer " + sessionStorage.getItem("auth-token")
+            }
+        })
             .then(response => response.json())
             .then(data => {
                 if (data.statuscode == 200) {

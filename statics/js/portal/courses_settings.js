@@ -14,7 +14,12 @@ document.addEventListener("DOMContentLoaded", function(){
                 
                 if(confirm("آیا اطمینان دارید؟")){
                     fetch(BASEURL + "/api/v1/Courses/deleteCourses?id=" + rowId, {
-                        method: "DELETE"
+                        method: "DELETE", 
+                        headers : {
+                            "Content-Type" : "application/json",
+                            "Accept" : "application/json",
+                            "Authorization" : "Bearer " + sessionStorage.getItem("auth-token")
+                        }
                     })
                     .then(response => response.json())
                     .then(data => {

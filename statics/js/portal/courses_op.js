@@ -11,16 +11,24 @@ document.addEventListener("DOMContentLoaded", function () {
         "description" : document.querySelector("#description")        
     }
 
-    //getting specific course data by its id
-    fetch(BASEURL + "/api/v1/Courses/getCourses?id=" + urlParams.get("id"))
-        .then(response => response.json())
-        .then(data => {
-            inputs.course_name.value = data.msg.course_name,
-            inputs.mbti_tags.value = data.msg.mbti_tags,
-            inputs.holland_tags.value = data.msg.holland_tags,
-            inputs.gardner_tags.value = data.msg.gardner_tags,
-            inputs.description.value = data.msg.description
+    if(urlParams.get("op") == "update"){
+        //getting specific course data by its id
+        fetch(BASEURL + "/api/v1/Courses/getCourses?id=" + urlParams.get("id"), {
+            headers : {
+                "Content-Type" : "application/json",
+                "Accept" : "application/json",
+                "Authorization" : "Bearer " + sessionStorage.getItem("auth-token")
+            }
         })
+            .then(response => response.json())
+            .then(data => {
+                inputs.course_name.value = data.msg.course_name,
+                inputs.mbti_tags.value = data.msg.mbti_tags,
+                inputs.holland_tags.value = data.msg.holland_tags,
+                inputs.gardner_tags.value = data.msg.gardner_tags,
+                inputs.description.value = data.msg.description
+            })
+    }
     //inserting courses
     submit.addEventListener("click", function (e) {
         e.preventDefault();
