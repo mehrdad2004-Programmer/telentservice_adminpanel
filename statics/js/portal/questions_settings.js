@@ -1,6 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
     const content = document.querySelector("#content");
     const hash = window.location.hash.split("#")[1];
+    const addQuestions = document.querySelector("#add-question");
+
+    addQuestions.setAttribute('href', "add_questions.html?type=" + hash)
 
     fetch(BASEURL + "/api/v1/" + hash + "/questions/get", {
         method: "GET",
@@ -39,6 +42,23 @@ document.addEventListener('DOMContentLoaded', function () {
                         <input type="text" name="tag" id="tag_${counter}" class="form-control mt-2">
                     </div>
                 </div>
+                <div class="container mt-3">
+                    <div>
+                        <label>نوع سوال</label>
+                    </div>
+                    <div>
+                        <input type="text" name="type" id="type_${counter}" class="form-control mt-2">
+                    </div>
+                </div>
+
+                <div class="container mt-3 pivote">
+                    <div>
+                        <label>محور سوال</label>
+                    </div>
+                    <div>
+                        <input type="text" name="pivote" id="pivote_${counter}" class="form-control mt-2">
+                    </div>
+                </div>
 
                 <div class="container d-lg-flex mt-4">
                     <div class="container">
@@ -56,9 +76,18 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Set the values using setAttribute after appending the div
                 div.querySelector('#question_' + counter).setAttribute('value', item.question);
                 div.querySelector('#tag_' + counter).setAttribute('value', item.tag);
+                div.querySelector('#type_' + counter).setAttribute('value', item.type);
+                div.querySelector('#pivote_' + counter).setAttribute('value', item.pivote);
 
                 const editButton = document.querySelector(`#edit_${counter}`);
                 const delButton = document.querySelector(`#delete_${counter}`);
+                const pivote = document.querySelectorAll(".pivote")
+
+                if(hash != "MBTI"){
+                    pivote.forEach(item => {
+                        item.style.display = 'none'
+                    });
+                }
 
                 // Edit button listener
                 editButton.addEventListener("click", function (event) {
@@ -66,6 +95,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     const questionId = this.getAttribute("data-id");
                     const newQuestion = document.querySelector(`#question_${counter}`).value;
                     const newTag = document.querySelector(`#tag_${counter}`).value;
+                    const newType = document.querySelector(`#type_${counter}`).value;
+                    const newPivote = document.querySelector(`#pivote_${counter}`).value;
 
                     console.log("ID:", questionId, "New Question:", newQuestion);
 
@@ -82,7 +113,9 @@ document.addEventListener('DOMContentLoaded', function () {
                                     {
                                         "id": parseInt(questionId), // Ensure the ID is treated as an integer
                                         "new_question": newQuestion,
-                                        "new_tag": newTag
+                                        "new_tag": newTag,
+                                        "new_type" : newType,
+                                        "new_pivote" : newPivote 
                                     }
                                 ]
                             })
