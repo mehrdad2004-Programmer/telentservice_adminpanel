@@ -8,7 +8,8 @@ document.addEventListener("DOMContentLoaded", function () {
         "mbti_tags" : document.querySelector("#mbti_tags"),
         "holland_tags" : document.querySelector("#holland_tags"),
         "gardner_tags" : document.querySelector("#gardner_tags"),
-        "description" : document.querySelector("#description")        
+        "description" : document.querySelector("#description"),        
+        "url" : document.querySelector("#url"),        
     }
 
     if(urlParams.get("op") == "update"){
@@ -26,7 +27,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 inputs.mbti_tags.value = data.msg.mbti_tags,
                 inputs.holland_tags.value = data.msg.holland_tags,
                 inputs.gardner_tags.value = data.msg.gardner_tags,
-                inputs.description.value = data.msg.description
+                inputs.description.value = data.msg.description,
+                inputs.url.value = data.msg.url
             })
     }
     //inserting courses

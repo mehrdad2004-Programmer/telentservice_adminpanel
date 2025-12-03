@@ -62,6 +62,7 @@ document.addEventListener("DOMContentLoaded", function(){
                     <td>${item.mbti_tags}</td>
                     <td>${item.holland_tags}</td>
                     <td>${item.gardner_tags}</td>
+                    <td><a href="${item.url}" target="_blank">${item.url}</a></td>
                     <td>${item.description}</td>
                     <td>
                         <a href="courses_op.html?op=update&id=${item.id}" class="btn btn-primary" row-id='${item.id}'>ویرایش</a>
