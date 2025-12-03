@@ -30,7 +30,8 @@ document.addEventListener("DOMContentLoaded", function () {
             "mbti": document.querySelector("#mbti"),
             "holland": document.querySelector("#holland"),
             "gardner": document.querySelector("#gardner"),
-            "courses": document.querySelector("#courses")
+            "courses": document.querySelector("#courses"),
+            "visited" : document.querySelector("#visited")
         }
 
         console.log(inputs)
@@ -38,83 +39,107 @@ document.addEventListener("DOMContentLoaded", function () {
         let url = BASEURL + "/api/v1/Report/getReport?"
 
         Object.entries(inputs).forEach(([key, val]) => {
+
+            // Special handling for checkbox
+            if (key === 'visited') {
+                if (val.checked) {
+                    url += "visited=on&";
+                }
+                return; // skip normal handling
+            }
+
+            // For 'courses' skip empty or "none"
             if (key === 'courses' && (!val.value || val.value === "none")) {
-                // Skip this key if 'courses' has no value or it's null
                 return;
             }
-            
+
+            // Normal-input handling
             if (val.value) {
                 url += key + "=" + val.value + "&";
             }
         });
 
 
+
         console.log(url);
 
         url.trim("&")
 
-        fetch(url, {
-            headers : {
-                "Content-Type" : "application/json",
-                "Accept" : "application/json",
-                "Authorization" : "Bearer " + sessionStorage.getItem("auth-token")
-            }
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.statuscode == 200) {
-                    count.textContent = data.count
-                    content.innerHTML = ""
-                    data.msg.forEach(item => {
-                        if(!(item.mbti)){
-                            content.innerHTML = `
-                                <div class="text-center mt-5 fw-bold">
-                                    <span>no rows found</span>
-                                </div>
-                            `
-                        }
-                        content.innerHTML += `
-                            <details class="p-1 rounded-3 border border-2 mt-3">
-                                <summary>
-                                    <span>${item.mbti.fname} ${item.mbti.lname}</span>
-                                </summary>
-                                <div class="container mt-3">
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>MBTI</th>
-                                                <th>GARDNER</th>
-                                                <th>HOLLAND</th>
-                                                <th>COURSES</th>
-                                                <th>ANALYSIS</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <td>${item.mbti.analysis}</td>
-                                            <td>${item.gardner.analysis}</td>
-                                            <td>${item.holland.analysis}</td>
-                                            <td>${item.courses}</td>
-                                            <td>${item.analysis}</td>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </details>
-                        `
-                    })
+fetch(url, {
+    headers : {
+        "Content-Type" : "application/json",
+        "Accept" : "application/json",
+        "Authorization" : "Bearer " + sessionStorage.getItem("auth-token")
+    }
+})
+.then(response => response.json())
+.then(data => {
+    if (data.statuscode == 200) {
 
-                } else if (data.statuscode == 404) {
-                    count.textContent = data.count
-                    content.innerHTML = `
-                        <div class="text-center mt-5 fw-bold">
-                            <span>no rows found</span>
-                        </div>
-                    `
-                }
-                else {
-                    count.textContent = data.count
-                    alert("مشکلی در جستجو پیش آمد - " + data.statuscode)
-                }
-            })
+        count.textContent = data.count;
+        content.innerHTML = "";
+
+        if (!data.msg || data.msg.length === 0) {
+            content.innerHTML = `
+                <div class="text-center mt-5 fw-bold">
+                    <span>no rows found</span>
+                </div>
+            `;
+            return;
+        }
+
+        data.msg.forEach(item => {
+
+            // 🔹 build visited string for THIS item
+            let visited = "";
+            if (Array.isArray(item.visited) && item.visited.length > 0) {
+                visited = item.visited.map(v => v.course).join(", ");
+            }
+
+            content.innerHTML += `
+                <details class="p-1 rounded-3 border border-2 mt-3">
+                    <summary>
+                        <span>${item.mbti.fname} ${item.mbti.lname}</span>
+                    </summary>
+                    <div class="container mt-3">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>MBTI</th>
+                                    <th>GARDNER</th>
+                                    <th>HOLLAND</th>
+                                    <th>COURSES</th>
+                                    <th>ANALYSIS</th>
+                                    <th>VISITED</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <td>${item.mbti.analysis}</td>
+                                <td>${item.gardner.analysis}</td>
+                                <td>${item.holland.analysis}</td>
+                                <td>${item.courses}</td>
+                                <td>${item.analysis}</td>
+                                <td>${visited}</td>
+                            </tbody>
+                        </table>
+                    </div>
+                </details>
+            `;
+        });
+
+    } else if (data.statuscode == 404) {
+        count.textContent = data.count;
+        content.innerHTML = `
+            <div class="text-center mt-5 fw-bold">
+                <span>no rows found</span>
+            </div>
+        `;
+    } else {
+        count.textContent = data.count;
+        alert("مشکلی در جستجو پیش آمد - " + data.statuscode);
+    }
+});
+
     })
 
 })

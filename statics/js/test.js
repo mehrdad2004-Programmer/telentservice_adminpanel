@@ -184,10 +184,47 @@ document.addEventListener("DOMContentLoaded", function () {
         ul.innerHTML = ""; // clear old
 
         resultData.recommendation.forEach(c => {
-            let li = document.createElement("li");
-            li.textContent = c.course + " (امتیاز: " + c.score + ")";
+            const li = document.createElement("li");
+
+            const a = document.createElement("a");
+            a.href = c.url;
+            a.textContent = `${c.course}`;
+            a.target = "_blank"; // optional
+
+            a.addEventListener("click", function(e){
+                console.log({
+                        "username" : localStorage.getItem("username"),
+                        "course" : e.target.textContent
+                    });
+                e.preventDefault();
+                fetch(BASEURL + "/api/v1/Report/insertClicks", {
+                    method : "POST", 
+                    body : JSON.stringify({
+                        "username" : localStorage.getItem("username"),
+                        "course" : e.target.textContent,
+                        "res_id" : resultData.id
+                    }),
+                    headers : {
+                        "Content-Type" : "application/json",
+                        "Accept" : "application/json"
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("data is " + data)
+                    if(data.statuscode == 201){
+                        window.open(e.target.getAttribute("href"))
+                    }else{
+                        alert("مشکلی در باز کردن آدرس پیش آمد - " + data.statuscode);
+                    }
+                })
+            })
+            
+
+            li.appendChild(a);
             ul.appendChild(li);
         });
+
 
         // show modal
         document.getElementById("resultModal").style.display = "flex";
