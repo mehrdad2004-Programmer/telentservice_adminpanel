@@ -1,0 +1,21 @@
+@font-face {
+    font-family: 'vazir';
+    src: url("../fonts/vazir.ttf");
+}
+
+@font-face{
+    font-family: "titr";
+    src: url("../fonts/titr.ttf");
+}
+
+*{
+    font-family: 'vazir';
+}
+
+.vazri{
+    font-family: "vazir" !important;
+}
+
+.titr{
+    font-family: "titr" !important;
+}
