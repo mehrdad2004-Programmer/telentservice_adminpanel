@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", function () {
     next.addEventListener("click", function () {
 
         if (!userAnswers[q_counter]) {
-            alert("Please select an answer before moving to next.");
+            alert("لطفا به سوال پاسخ دهید");
             return;
         }
 
@@ -144,8 +144,10 @@ document.addEventListener("DOMContentLoaded", function () {
     // -------------------------------------
     submit.addEventListener("click", function () {
 
+        alert("کاربر گرامی، مرحله تحلیل ممکن است کمی زمان بر باشد، لطفا شکیبا باشید")
+
         if (Object.keys(userAnswers).length !== questions.length) {
-            alert("Please answer all questions.");
+            alert("لطفا به همه سوال ها پاسخ دهید");
             return;
         }
 
@@ -200,7 +202,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(err => {
 
                 spinner.classList.add("d-none");
-                submitText.textContent = "Submit";
+                submitText.textContent = "اتمام آزمون";
                 submit.disabled = false;
 
                 alert("Error submitting. Please try again.");
