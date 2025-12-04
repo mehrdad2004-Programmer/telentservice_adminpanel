@@ -163,3 +163,28 @@ button{
 .d-ltr{
     direction: ltr;
 }
+
+.banner{
+    width: 70%;
+}
+
+
+
+@media screen and (max-width : 520px) {
+    .counter{
+        text-align: center !important;
+    }
+
+    .buttons{
+        display: flex;
+        justify-content: center;
+    }
+
+    .q_card{
+        height: 380px !important;
+    }
+
+    .banner{
+        width: 100%;
+    }
+}

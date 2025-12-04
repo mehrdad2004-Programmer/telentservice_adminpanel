@@ -13,7 +13,7 @@
 
 <body>
 
-<!-- Modal -->
+    <!-- Modal -->
     <div id="userModal" class="modal-view">
         <div class="modal-content">
             <div class="modal-header">
@@ -22,15 +22,15 @@
             <div class="modal-body">
                 <label for="fname">نام:</label>
                 <input type="text" id="fname" placeholder="نام خود را وارد کنید">
-                
+
                 <label for="lname">نام خانوادگی:</label>
                 <input type="text" id="lname" placeholder="نام خانوادگی خود را وارد کنید">
-                
+
                 <label for="username">نام کاربری:</label>
                 <input type="text" id="username" placeholder="نام کاربری خود را وارد کنید">
             </div>
             <div class="modal-footer">
-                <button id="saveBtn" class="btn">ثبت</button>
+                <button id="saveBtn" style="color: white;" class="btn">ثبت</button>
             </div>
         </div>
     </div>
@@ -62,8 +62,12 @@
     </div>
 
     <div class="container-fulid h-100 d-flex justify-content-center align-items-center">
+
         <div class="container">
-            <div class="container p-2 counter">
+            <div class="container text-center">
+                <img src="statics/images/logo/banner.webp" class="banner">
+            </div>
+            <div class="container p-2 counter mt-5">
                 <span>سوال</span>
                 <span id="count">1</span>
                 <span>از</span>
@@ -82,7 +86,7 @@
 
                 </div>
             </div>
-            <div class="container d-flex mt-5 d-ltr">
+            <div class="container d-flex mt-5 d-ltr buttons">
                 <div>
                     <button id="next">بعدی</button>
                     <button id="submit">اتمام آزمون</button>

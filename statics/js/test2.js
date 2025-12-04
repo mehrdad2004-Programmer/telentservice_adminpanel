@@ -59,11 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function renderAnswers() {
 
         answers.innerHTML = `
-            ${renderOption(1)}
-            ${renderOption(2)}
-            ${renderOption(3)}
-            ${renderOption(4)}
-            ${renderOption(5)}
+            ${renderOption()}
         `;
 
         if (userAnswers[q_counter]) {
@@ -274,15 +270,79 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    function renderOption(val) {
-        return `
+function renderOption() {
+    return `
         <div class="container mt-3">
             <label class="radio">
-                <input type="radio" name="choice_${q_counter + 1}" value="${val}" />
+                <input type="radio" name="choice_${q_counter + 1}" value="5" />
                 <span class="custom"></span>
-                Option ${val}
+                عالی
             </label>
-        </div>`;
-    }
+        </div>
 
+        <div class="container mt-3">
+            <label class="radio">
+                <input type="radio" name="choice_${q_counter + 1}" value="4" />
+                <span class="custom"></span>
+                خوب
+            </label>
+        </div>
+
+        <div class="container mt-3">
+            <label class="radio">
+                <input type="radio" name="choice_${q_counter + 1}" value="3" />
+                <span class="custom"></span>
+                متوسط
+            </label>
+        </div>
+
+        <div class="container mt-3">
+            <label class="radio">
+                <input type="radio" name="choice_${q_counter + 1}" value="2" />
+                <span class="custom"></span>
+                ضعیف
+            </label>
+        </div>
+
+        <div class="container mt-3">
+            <label class="radio">
+                <input type="radio" name="choice_${q_counter + 1}" value="1" />
+                <span class="custom"></span>
+                بسیار ضعیف
+            </label>
+        </div>
+    `;
+}
+
+
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const saveBtn = document.querySelector("#saveBtn");
+    const modal = document.querySelector("#userModal");
+
+    modal.style.display = "flex";
+
+    // Save user data to localStorage when 'ثبت' button is clicked
+    saveBtn.addEventListener("click", function () {
+        const fname = document.querySelector("#fname").value;
+        const lname = document.querySelector("#lname").value;
+        const username = document.querySelector("#username").value;
+
+        // Check if all fields are filled
+        if (fname && lname && username) {
+            // Save to localStorage
+            localStorage.setItem("fname", fname);
+            localStorage.setItem("lname", lname);
+            localStorage.setItem("username", username);
+
+            alert("اطلاعات شما ذخیره شد");
+
+            // Close modal after saving
+            modal.style.display = "none";
+        } else {
+            alert("لطفاً همه اطلاعات را وارد کنید.");
+        }
+    });
 });
