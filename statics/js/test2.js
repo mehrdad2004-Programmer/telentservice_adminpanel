@@ -217,7 +217,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("res_holland").textContent = resultData.test_analysis.Holland;
         document.getElementById("res_gardner").textContent = resultData.test_analysis.Gardner;
 
-        document.querySelector("#result_description").textContent = resultData.description;
+        document.querySelector("#result_description").innerHTML = resultData.description;
 
         let ul = document.getElementById("res_courses");
         ul.innerHTML = "";
